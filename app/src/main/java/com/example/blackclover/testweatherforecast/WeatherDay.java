@@ -2,37 +2,35 @@ package com.example.blackclover.testweatherforecast;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.text.DateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class WeatherDay {
 
-    public class WeatherTemp {
-        Double currentTemp;
-        Double minTemp;
-        Double maxTemp;
-    }
-
-    public class WeatherDescription {
-        Integer actualID;
-    }
-
-    public class WeatherPreassure{
-        Integer preassure;
-    }
-    public class WeatherHumidity{
+    public class MeteorologicalElements {
+        Double temp;
+        Double temp_min;
+        Double temp_max;
+        Integer pressure;
         Integer humidity;
     }
 
-    @SerializedName("main")
-    private WeatherTemp temp;
+    public class WeatherDescription {
+        int id;
+        String icon;
+        String description;
+    }
+
+    public class SunriseSunset {
+        long sunset;
+        long sunrise;
+    }
+
 
     @SerializedName("main")
-    private WeatherPreassure preassure;
-
-    @SerializedName("main")
-    private WeatherHumidity humidity;
-
+    MeteorologicalElements met_elements;
     @SerializedName("weather")
     private List<WeatherDescription> description;
 
@@ -42,44 +40,97 @@ public class WeatherDay {
     @SerializedName("dt")
     private long timestamp;
 
+    @SerializedName("sys")
+    SunriseSunset sunriseSunset;
 
+    @SerializedName("timezone")
+    int timezone;
 
-    public WeatherDay(WeatherTemp temp,
-                      List<WeatherDescription> description,
-                      WeatherPreassure preassure,
-                      WeatherHumidity humidity) {
+    public WeatherDay(MeteorologicalElements met_elements, List<WeatherDescription> description) {
 
-        this.temp = temp;
+        this.met_elements = met_elements;
         this.description = description;
-        this.preassure = preassure;
-        this.humidity = humidity;
 
     }
+
     public Calendar getDate() {
         Calendar date = Calendar.getInstance();
         date.setTimeInMillis(timestamp * 1000);
         return date;
     }
 
-    public String getTemp() { return String.valueOf(temp.currentTemp); }
+    public String getDateForUpdate() {
+        DateFormat df = DateFormat.getDateTimeInstance();
+        String date = df.format(new Date(timestamp * 1000));
+        return date;
+    }
 
-    public String getTempMin() { return String.valueOf(temp.minTemp); }
+    public String getTemp() {
+        return String.valueOf(met_elements.temp);
+    }
 
-    public String getTempMax() { return String.valueOf(temp.maxTemp); }
+    public String getTempMin() {
+        return String.valueOf(met_elements.temp_min);
+    }
 
-    public String getTempInteger() { return String.valueOf(temp.currentTemp.intValue()); }
+    public String getTempMax() {
+        return String.valueOf(met_elements.temp_max);
+    }
 
-    public String getTempWithDegree() { return String.valueOf(temp.currentTemp.intValue()) + "\u00B0"; }
+    public String getTempInteger() {
+        return String.valueOf(met_elements.temp.intValue());
+    }
 
-    public String getCity() { return city; }
+    public String getTempWithDegree() {
+        return String.valueOf(met_elements.temp.intValue())
+                + "\u00B0";
+    }
 
-    public void setCity(String city){
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
         this.city = city;
     }
 
-    public Integer getActualID() { return description.get(0).actualID; }
+    public Integer getPreassure() {
+        return met_elements.pressure;
+    }
 
-    public Integer getPreassure() { return preassure.preassure.intValue(); }
+    public Integer getHumidity() {
+        return met_elements.humidity;
+    }
 
-    public Integer getHumidity() { return humidity.humidity.intValue(); }
+    public String getIcon() {
+        return description.get(0).icon;
+    }
+
+
+    public String getIconUrl() {
+
+        return "http://openweathermap.org/img/w/" + getIcon() + ".png";
+
+    }
+
+    public Integer getId() {
+        return description.get(0).id;
+    }
+
+    public String getDescription() {
+        return description.get(0).description;
+    }
+
+    public long getSunset() {
+        return sunriseSunset.sunset * 1000;
+    }
+
+    public long getSunrise() {
+        return sunriseSunset.sunrise * 1000;
+    }
+
+    public int getTimezone() {
+        return timezone;
+    }
+
 }

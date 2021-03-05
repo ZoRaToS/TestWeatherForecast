@@ -1,49 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#2198F3"
     android:orientation="vertical"
-    android:background="#2196F3"
-    tools:context=".MainActivity">
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@android:dimen/app_icon_size"
-       >
-
-    </EditText>
-
-    <LinearLayout
-        android:id="@+id/llToday"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="30dip">
-
-        <TextView
-            android:id="@+id/tvTemp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="50dp"
-            android:text="Weather... " />
-
-    </LinearLayout>
+    tools:context="com.example.blackclover.testweatherforecast.MainActivity">
 
 
-    <LinearLayout
-        android:id="@+id/llForecast"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="30dip">
-    </LinearLayout>
+    <!--    <LinearLayout-->
+    <!--        android:id="@+id/llToday"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:orientation="horizontal"-->
+    <!--        android:layout_marginTop="30dip">-->
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="getWeather"
-        android:text="Get" />
+    <!--        <TextView-->
+    <!--            android:id="@+id/tvTemp"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:textSize="50dp"-->
+    <!--            android:text="Weather... " />-->
 
+    <!--        <ImageView-->
+    <!--            android:id="@+id/ivImage"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="60dp" />-->
+
+    <!--    </LinearLayout>-->
+
+
+    <!--    <LinearLayout-->
+    <!--        android:id="@+id/llForecast"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:orientation="horizontal"-->
+    <!--        android:layout_marginTop="30dip">-->
+    <!--    </LinearLayout>-->
+
+    <!--    <Button-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:onClick="getWeather"-->
+    <!--        android:text="Get" />-->
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="178dp"
+        android:layout_height="276dp"
+        app:srcCompat="@drawable/iconweather"
+        android:layout_gravity="center"
+        android:layout_marginTop="200sp"
+        />
+
+<!--    <Button-->
+<!--        android:id="@+id/getWeather"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Go to weather"-->
+<!--        android:layout_gravity="center"  />-->
 </LinearLayout>
