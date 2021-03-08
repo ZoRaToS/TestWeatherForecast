@@ -3,9 +3,11 @@ package com.example.blackclover.testweatherforecast;
 import com.google.gson.annotations.SerializedName;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 public class WeatherDay {
 
@@ -54,7 +56,8 @@ public class WeatherDay {
     }
 
     public Calendar getDate() {
-        Calendar date = Calendar.getInstance();
+        TimeZone tz = TimeZone.getTimeZone("UTC");
+        Calendar date = Calendar.getInstance(tz);
         date.setTimeInMillis(timestamp * 1000);
         return date;
     }
@@ -62,6 +65,7 @@ public class WeatherDay {
     public String getDateForUpdate() {
         DateFormat df = DateFormat.getDateTimeInstance();
         String date = df.format(new Date(timestamp * 1000));
+//        return new SimpleDateFormat("dd/MM/yy HH:mm").format(timestamp * 1000);
         return date;
     }
 
@@ -70,11 +74,11 @@ public class WeatherDay {
     }
 
     public String getTempMin() {
-        return String.valueOf(met_elements.temp_min);
+        return String.valueOf(met_elements.temp_min.intValue()) + "\u00B0";
     }
 
     public String getTempMax() {
-        return String.valueOf(met_elements.temp_max);
+        return String.valueOf(met_elements.temp_max.intValue()) + "\u00B0";
     }
 
     public String getTempInteger() {

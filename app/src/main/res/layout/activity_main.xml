@@ -53,7 +53,7 @@
         android:layout_height="276dp"
         app:srcCompat="@drawable/iconweather"
         android:layout_gravity="center"
-        android:layout_marginTop="200sp"
+        android:layout_marginTop="150sp"
         />
 
 <!--    <Button-->

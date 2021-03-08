@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#448AFF"
+    android:background="#FF0099CC"
     android:orientation="vertical"
     tools:context="com.example.blackclover.testweatherforecast.WeatherActivity">
 
@@ -60,29 +60,20 @@
         android:textColor="@android:color/white" />
 
     <LinearLayout
+        android:id="@+id/forecast"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:id="@+id/forecast">
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="1sp"
-            android:textSize="30sp"
-            />
+        android:orientation="horizontal">
     </LinearLayout>
 
 
     <!--    <Button-->
-<!--        android:id="@+id/get_weather_button"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_gravity="center"-->
-<!--        android:onClick="getCurrentWeather"-->
-<!--        android:text="Get data" />-->
+    <!--        android:id="@+id/get_weather_button"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_gravity="center"-->
+    <!--        android:onClick="getCurrentWeather"-->
+    <!--        android:text="Get data" />-->
 
 
 </LinearLayout>

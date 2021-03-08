@@ -12,7 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".WeatherActivity">
+        <activity
+            android:name=".WeatherActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="com.example.blackclover.testweayherforecast.WeatherActivity" />
 
@@ -20,7 +22,10 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
