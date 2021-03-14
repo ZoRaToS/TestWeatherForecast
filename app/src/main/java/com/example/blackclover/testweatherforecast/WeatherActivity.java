@@ -15,7 +15,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -35,6 +34,7 @@ public class WeatherActivity extends AppCompatActivity {
     TextView detalesField;
     TextView currentTemp;
     WeatherAPI.ApiInterface api;
+    WeatherAPI.ApiInterface api_coord;
     Typeface weatherFont;
     View v;
     LinearLayout forecast;
@@ -68,10 +68,15 @@ public class WeatherActivity extends AppCompatActivity {
         return false;
     }
 
+    /**
+     * Метод showInputDialog() призначений для введення користувачем назви міста (аргументу) і
+     * передачі його в метод getWeather()
+     */
     private void showInputDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Change city");
         final EditText input = new EditText(this);
+        input.setTextLocale(new Locale("ru", "RU"));
         input.setInputType(InputType.TYPE_CLASS_TEXT);
         builder.setView(input);
         builder.setPositiveButton("Go", new DialogInterface.OnClickListener() {
@@ -86,16 +91,15 @@ public class WeatherActivity extends AppCompatActivity {
     /**
      * метод getWeather() отримує данні поточної погоди та данні прогнозу погоди з сервісу
      * openweathermap.org
-     *
-     * @param v
      */
 
     public void getWeather(View v, String city) {
-//        // String city_name = "Khmelnytskyi";
+        // String city_name = "Khmelnytskyi";
         String units = "metric";
         String language = "ua";
         String api_key = WeatherAPI.API_KEY;
-//        //get current weather
+
+        //get current weather
         Call<WeatherDay> callCurrentWeather = api.getToday(city, units, language, api_key);
         callCurrentWeather.enqueue(new Callback<WeatherDay>() {
             @SuppressLint("SetTextI18n")
@@ -112,8 +116,8 @@ public class WeatherActivity extends AppCompatActivity {
                     weatherIcon.setText(setWeatherIcon(data.getId(), data.getSunrise(), data.getSunset()));
                     detalesField.setText(data.getDescription()
                             .toUpperCase()
-                            + "\n" + "Вологість: " + data.getHumidity() + "%"
-                            + "\n" + "Атмосферний тиск: " + data.getPreassure() + " hPa");
+                            + "\n" + "Humidity: " + data.getHumidity() + "%"
+                            + "\n" + "Pressure: " + data.getPreassure() + "hPa");
                     currentTemp.setText(data.getTempWithDegree());
                 }
             }
@@ -126,7 +130,8 @@ public class WeatherActivity extends AppCompatActivity {
         });
 
         //get forecast
-
+        String[] minTemp = {""};
+        final String[] icon = {""};
         Call<WeatherForecast> callForecast = api.getForecast(city, units, language, api_key);
         callForecast.enqueue(new Callback<WeatherForecast>() {
             @Override
@@ -135,6 +140,7 @@ public class WeatherActivity extends AppCompatActivity {
                 Log.d(TAG, response.toString());
                 if (response.isSuccessful()) {
                     WeatherForecast dataForecast = response.body();
+                    @SuppressLint("SimpleDateFormat")
                     SimpleDateFormat formatDayOfWeek = new SimpleDateFormat("E");
 
                     LinearLayout.LayoutParams paramsTextView =
@@ -149,10 +155,22 @@ public class WeatherActivity extends AppCompatActivity {
                             new LinearLayout.LayoutParams(200,
                                     500);
                     paramsLinearLayout.setMargins(50, 0, 50, 0);
+
                     forecast.removeAllViews();
+
+
                     for (WeatherDay weatherDay : dataForecast.getItems()) {
-                        int hourTime = weatherDay.getDate().get(Calendar.HOUR_OF_DAY);
-                        if (hourTime == 15) {
+                        int hourOfDay = weatherDay.getDate().get(Calendar.HOUR_OF_DAY);
+                        TextView tvDay = new TextView(WeatherActivity.this);
+                        TextView tvTemp = new TextView(WeatherActivity.this);
+                        TextView ivIconNight = new TextView(WeatherActivity.this);
+                        TextView ivIconDay = new TextView(WeatherActivity.this);
+                        if (hourOfDay == 3) {
+                            minTemp[0] = weatherDay.getTempMin();
+                            icon[0] = setWeatherIcon(weatherDay.getId(), weatherDay.getSunrise(),
+                                    weatherDay.getSunset());
+                        }
+                        if (hourOfDay == 15) {
                             @SuppressLint("DefaultLocale")
                             String date = String.format("%d.%d.%d %d:%d",
                                     weatherDay.getDate().get(Calendar.DAY_OF_MONTH),
@@ -164,34 +182,46 @@ public class WeatherActivity extends AppCompatActivity {
                             Log.d(TAG, date);
                             Log.d(TAG, weatherDay.getTempInteger());
                             Log.d(TAG, "---");
+
                             // child view wrapper
                             LinearLayout childLayout = new LinearLayout(WeatherActivity.this);
                             childLayout.setLayoutParams(paramsLinearLayout);
                             childLayout.setOrientation(LinearLayout.VERTICAL);
 
                             // show day of week
-                            TextView tvDay = new TextView(WeatherActivity.this);
                             String dayOfWeek = formatDayOfWeek.format(weatherDay.getDate().getTime());
                             tvDay.setTextColor(Color.WHITE);
+                            tvDay.setTextSize(15);
                             tvDay.setText(dayOfWeek);
+                            tvDay.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                             tvDay.setLayoutParams(paramsTextView);
                             childLayout.addView(tvDay);
 
+                            // show image day
+                            ivIconDay.setTypeface(weatherFont);
+                            ivIconDay.setLayoutParams(paramsImageView);
+                            ivIconDay.setTextColor(Color.WHITE);
+                            ivIconDay.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                            ivIconDay.setTextSize(15);
+                            ivIconDay.setText(setWeatherIcon(weatherDay.getId(), weatherDay.getSunrise(),
+                                    weatherDay.getSunset()));
+                            childLayout.addView(ivIconDay);
+
                             // show temp
-                            TextView tvTemp = new TextView(WeatherActivity.this);
-                            tvTemp.setText(weatherDay.getTempWithDegree());
+                            tvTemp.setText(weatherDay.getTempWithDegree() + "\n" + "——" + "\n" + minTemp[0]);
                             tvTemp.setLayoutParams(paramsTextView);
+                            tvTemp.setTextSize(15);
                             tvTemp.setTextColor(Color.WHITE);
                             childLayout.addView(tvTemp);
 
-                            // show image
-                            TextView ivIcon = new TextView(WeatherActivity.this);
-                            ivIcon.setTypeface(weatherFont);
-                            ivIcon.setLayoutParams(paramsImageView);
-                            ivIcon.setTextColor(Color.WHITE);
-                            ivIcon.setText(setWeatherIcon(weatherDay.getId(), weatherDay.getSunrise(),
-                                    weatherDay.getSunset()));
-                            childLayout.addView(ivIcon);
+                            // show image night
+                            ivIconNight.setTypeface(weatherFont);
+                            ivIconNight.setLayoutParams(paramsImageView);
+                            ivIconNight.setTextColor(Color.WHITE);
+                            ivIconNight.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                            ivIconNight.setTextSize(15);
+                            ivIconNight.setText(icon[0]);
+                            childLayout.addView(ivIconNight);
 
                             forecast.addView(childLayout);
                         }
@@ -205,8 +235,6 @@ public class WeatherActivity extends AppCompatActivity {
                 Log.e(TAG, t.toString());
             }
         });
-
-
     }
 
 
@@ -244,5 +272,6 @@ public class WeatherActivity extends AppCompatActivity {
         }
         return icon;
     }
+
 
 }
