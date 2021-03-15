@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -96,7 +97,7 @@ public class WeatherActivity extends AppCompatActivity {
     public void getWeather(View v, String city) {
         // String city_name = "Khmelnytskyi";
         String units = "metric";
-        String language = "ua";
+        String language = "en";
         String api_key = WeatherAPI.API_KEY;
 
         //get current weather
@@ -119,6 +120,9 @@ public class WeatherActivity extends AppCompatActivity {
                             + "\n" + "Humidity: " + data.getHumidity() + "%"
                             + "\n" + "Pressure: " + data.getPreassure() + "hPa");
                     currentTemp.setText(data.getTempWithDegree());
+                } else {
+                    Toast.makeText(WeatherActivity.this, "No weather data found",
+                            Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -130,7 +134,7 @@ public class WeatherActivity extends AppCompatActivity {
         });
 
         //get forecast
-        String[] minTemp = {""};
+        final String[] minTemp = {""};
         final String[] icon = {""};
         Call<WeatherForecast> callForecast = api.getForecast(city, units, language, api_key);
         callForecast.enqueue(new Callback<WeatherForecast>() {
@@ -155,7 +159,6 @@ public class WeatherActivity extends AppCompatActivity {
                             new LinearLayout.LayoutParams(200,
                                     500);
                     paramsLinearLayout.setMargins(50, 0, 50, 0);
-
                     forecast.removeAllViews();
 
 
@@ -166,9 +169,9 @@ public class WeatherActivity extends AppCompatActivity {
                         TextView ivIconNight = new TextView(WeatherActivity.this);
                         TextView ivIconDay = new TextView(WeatherActivity.this);
                         if (hourOfDay == 3) {
-                            minTemp[0] = weatherDay.getTempMin();
                             icon[0] = setWeatherIcon(weatherDay.getId(), weatherDay.getSunrise(),
                                     weatherDay.getSunset());
+                            minTemp[0] = weatherDay.getTempMin();
                         }
                         if (hourOfDay == 15) {
                             @SuppressLint("DefaultLocale")
@@ -208,7 +211,8 @@ public class WeatherActivity extends AppCompatActivity {
                             childLayout.addView(ivIconDay);
 
                             // show temp
-                            tvTemp.setText(weatherDay.getTempWithDegree() + "\n" + "——" + "\n" + minTemp[0]);
+                            tvTemp.setText(weatherDay.getTempMax() + "\n" + "——" + "\n"
+                                    + minTemp[0]);
                             tvTemp.setLayoutParams(paramsTextView);
                             tvTemp.setTextSize(15);
                             tvTemp.setTextColor(Color.WHITE);
