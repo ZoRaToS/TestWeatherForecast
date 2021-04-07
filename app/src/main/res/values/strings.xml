@@ -2,7 +2,7 @@
     <string name="app_name">Weather Forecast</string>
 
     <string name="change_city">Change city</string>
-    <string name="open_weather_maps_app_id">ea7b1a34e6b303c75d56e8539489cca9</string>
+    <string name="open_weather_maps_api_key">ea7b1a34e6b303c75d56e8539489cca9</string>
     <string name="weather_sunny">&#xf00d;</string>
     <string name="weather_clear_night">&#xf02e;</string>
     <string name="weather_foggy">&#xf014;</string>

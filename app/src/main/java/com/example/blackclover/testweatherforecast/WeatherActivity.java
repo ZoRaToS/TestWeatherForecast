@@ -35,9 +35,7 @@ public class WeatherActivity extends AppCompatActivity {
     TextView detalesField;
     TextView currentTemp;
     WeatherAPI.ApiInterface api;
-    WeatherAPI.ApiInterface api_coord;
     Typeface weatherFont;
-    View v;
     LinearLayout forecast;
 
     @Override
@@ -83,7 +81,7 @@ public class WeatherActivity extends AppCompatActivity {
         builder.setPositiveButton("Go", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                getWeather(v, input.getText().toString());
+                getWeather(input.getText().toString());
             }
         });
         builder.show();
@@ -94,11 +92,11 @@ public class WeatherActivity extends AppCompatActivity {
      * openweathermap.org
      */
 
-    public void getWeather(View v, String city) {
+    public void getWeather(String city) {
         // String city_name = "Khmelnytskyi";
         String units = "metric";
         String language = "en";
-        String api_key = WeatherAPI.API_KEY;
+        String api_key = getString(R.string.open_weather_maps_api_key);
 
         //get current weather
         Call<WeatherDay> callCurrentWeather = api.getToday(city, units, language, api_key);
@@ -118,10 +116,11 @@ public class WeatherActivity extends AppCompatActivity {
                     detalesField.setText(data.getDescription()
                             .toUpperCase()
                             + "\n" + "Humidity: " + data.getHumidity() + "%"
-                            + "\n" + "Pressure: " + data.getPreassure() + "hPa");
-                    currentTemp.setText(data.getTempWithDegree());
+                            + "\n" + "Pressure: " + data.getPreassure() + " hPa");
+                    currentTemp.setText(data.getTempWithDegree() + "\n" + "Feels like: "
+                            + data.getTempFellsLike());
                 } else {
-                    Toast.makeText(WeatherActivity.this, "No weather data found",
+                    Toast.makeText(WeatherActivity.this, getString(R.string.place_not_found),
                             Toast.LENGTH_LONG).show();
                 }
             }

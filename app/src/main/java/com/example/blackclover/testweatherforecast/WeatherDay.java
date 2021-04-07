@@ -1,5 +1,7 @@
 package com.example.blackclover.testweatherforecast;
 
+import android.telephony.ims.ImsReasonInfo;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.text.DateFormat;
@@ -15,8 +17,10 @@ public class WeatherDay {
         Double temp;
         Double temp_min;
         Double temp_max;
+        Double feels_like;
         Integer pressure;
         Integer humidity;
+
     }
 
     public class WeatherDescription {
@@ -33,6 +37,7 @@ public class WeatherDay {
 
     @SerializedName("main")
     MeteorologicalElements met_elements;
+
     @SerializedName("weather")
     private List<WeatherDescription> description;
 
@@ -56,6 +61,7 @@ public class WeatherDay {
     }
 
     public Calendar getDate() {
+
         TimeZone tz = TimeZone.getTimeZone("UTC");
         Calendar date = Calendar.getInstance(tz);
         date.setTimeInMillis(timestamp * 1000);
@@ -65,7 +71,7 @@ public class WeatherDay {
     public String getDateForUpdate() {
         DateFormat df = DateFormat.getDateTimeInstance();
         String date = df.format(new Date(timestamp * 1000));
-//        return new SimpleDateFormat("dd/MM/yy HH:mm").format(timestamp * 1000);
+        //return new SimpleDateFormat("dd/MM/yy HH:mm").format(timestamp * 1000);
         return date;
     }
 
@@ -83,6 +89,10 @@ public class WeatherDay {
 
     public String getTempInteger() {
         return String.valueOf(met_elements.temp.intValue());
+    }
+
+    public String getTempFellsLike() {
+        return String.valueOf(met_elements.feels_like.intValue()) + "\u00B0";
     }
 
     public String getTempWithDegree() {
@@ -104,17 +114,6 @@ public class WeatherDay {
 
     public Integer getHumidity() {
         return met_elements.humidity;
-    }
-
-    public String getIcon() {
-        return description.get(0).icon;
-    }
-
-
-    public String getIconUrl() {
-
-        return "http://openweathermap.org/img/w/" + getIcon() + ".png";
-
     }
 
     public Integer getId() {

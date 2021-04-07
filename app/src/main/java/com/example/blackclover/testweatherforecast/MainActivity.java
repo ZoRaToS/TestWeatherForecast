@@ -34,17 +34,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }, timeOut, timeOut);
     }
-    //public void addListenerOnButton() {
-    // getWeateherBtn = findViewById(R.id.getWeather);
-//        getWeateherBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent =
-//                        new Intent(MainActivity.this, WeatherActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-//   }
+
 
 
 }

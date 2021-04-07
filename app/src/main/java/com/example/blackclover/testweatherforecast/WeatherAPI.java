@@ -14,7 +14,7 @@ import retrofit2.http.Query;
 
 public class WeatherAPI {
 
-    public static final String API_KEY = "ea7b1a34e6b303c75d56e8539489cca9" ;
+    //public static final String API_KEY = "ea7b1a34e6b303c75d56e8539489cca9";
     public static final String BASE_URL = "http://api.openweathermap.org/data/2.5/";
     private static Retrofit retrofit = null;
 
@@ -38,7 +38,6 @@ public class WeatherAPI {
                 @Query("lang") String language,
                 @Query("appid") String appid
         );
-
 
     }
 
